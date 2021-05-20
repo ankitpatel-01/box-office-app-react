@@ -1,11 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MainPageLayout from '../components/MainPageLayout'
 
 
 const Home = () => {
+
+    const [input, setInput] = useState("");
+
+    const onInputChange = (e) => {
+        setInput(e.target.value);
+    }
+
+    const onSearch = () => {
+        // http://api.tvmaze.com/search/shows?q=girls
+        fetch(`http://api.tvmaze.com/search/shows?q=${input}`).then(res => res.json()).then(result => console.log(result))
+    }
+
+    const onKeyDown = (e) => {
+        if (e.keyCode === 13) {
+            onSearch();
+        }
+    }
+
+
     return (
         <MainPageLayout>
-            This is Home page
+            <input type="text" onChange={onInputChange} value={input} onKeyDown={onKeyDown} />
+            <button type="button" onClick={onSearch} >Search</button>
         </MainPageLayout>
     )
 }
